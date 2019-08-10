@@ -7,9 +7,9 @@ day1:
 
     Backend
         ----Get Express and TypeScript Up and Running
-        Save URL in Redis
-        Get URL from Redis
-        Upload a file
+        ----Save URL in Redis
+        ----Get URL from Redis
+        ----Upload a file
         ----Upload to Imgur
         Queue Job in Kafka
         ----Return status of job by querying Redis

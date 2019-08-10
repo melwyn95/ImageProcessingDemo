@@ -53,11 +53,11 @@ const UploadHandler = (req: Request, res: Response) => {
 
             // Update status in Redis
             UpdateStatusInRedis(jobId, { 
+                jobId,
                 status: SUCCESS, 
                 message: '',
                 originalImage: imgurURL,                
             });
-            console.log(imgurURL);
             
         }).catch(error => {
 
