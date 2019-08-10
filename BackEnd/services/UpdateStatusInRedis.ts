@@ -1,11 +1,7 @@
 import RedisClient from './RedisClient';
 
-const UpdateStatusInRedis = (jobId: string, status: string, message: string = '') => {
-    RedisClient.hmset(jobId, {
-        jobId,
-        status,
-        message,
-    });
+const UpdateStatusInRedis = (jobId: string, object: any) => {
+    RedisClient.hmset(jobId, object);
 };
 
 export default UpdateStatusInRedis;

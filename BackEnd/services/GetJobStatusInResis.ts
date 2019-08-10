@@ -1,8 +1,11 @@
 import RedisClient from './RedisClient';
 
 const GetJobStatusInRedis = (jobId: string, fieldNames: string [], callback: Function) => {
-    RedisClient.hmget(jobId, fieldNames, (err, object) => {
-        callback(err, object);
+    RedisClient.hgetall(jobId, (err, object) => {
+        callback(err, fieldNames.reduce((acc: any, fileName: string) => {
+            acc[fileName] = object[fileName]
+            return acc;
+        }, {}));
     });
 };
 

@@ -11,6 +11,7 @@ import { getMulterRequestHandler } from '../services/Upload';
 import UpdateStatusInRedis from '../services/UpdateStatusInRedis';
 import { IMGUR_UPLOAD_API_URL, IMGUR_AUTH_HEADER_VALUE } from '../config';
 import ValidateImageDimensions from '../services/ValidateImageDimensions';
+import { deleteFile } from '../utils';
 
 
 const headers = { Authorization: IMGUR_AUTH_HEADER_VALUE };
@@ -30,7 +31,8 @@ const UploadHandler = (req: Request, res: Response) => {
         const filePath = getPathName(fileName);
 
         // validate image dimensions
-        if (ValidateImageDimensions(filePath)) {
+        if (!ValidateImageDimensions(filePath)) {
+            deleteFile(filePath);
             return res.json({ error: INVALID_IMAGE_DIMENSIONS, type: FAILURE });
         }
 
@@ -42,25 +44,29 @@ const UploadHandler = (req: Request, res: Response) => {
             headers,
             body: formData
         }).then(async response => {
-            const { link: imgurURL } = await response.json();
+            const { data: { link: imgurURL } = { link: ''}} = await response.json();
 
             // Delete Image File
-            fs.unlink(filePath, () => {});
+            deleteFile(filePath);
 
             // Queue Job on to Kafka
 
             // Update status in Redis
-            UpdateStatusInRedis(jobId, SUCCESS);
-
+            UpdateStatusInRedis(jobId, { 
+                status: SUCCESS, 
+                message: '',
+                originalImage: imgurURL,                
+            });
+            console.log(imgurURL);
             
         }).catch(error => {
 
             // Update Status in Redis
-            UpdateStatusInRedis(jobId, FAILURE, UNABLE_TO_UPLOAD_IMAGE);
+            UpdateStatusInRedis(jobId, { status: FAILURE, message: UNABLE_TO_UPLOAD_IMAGE });
 
         });
 
-        UpdateStatusInRedis(jobId, PROCESSING);
+        UpdateStatusInRedis(jobId, { status: PROCESSING, message: '' });
 
         return res.json({ type: PROCESSING, jobId });
     });
