@@ -10,7 +10,7 @@ day1:
         Save URL in Redis
         Get URL from Redis
         Upload a file
-        Upload to Imgur
+        ----Upload to Imgur
         Queue Job in Kafka
         Return status of job by querying Redis
 
