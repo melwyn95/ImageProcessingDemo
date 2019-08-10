@@ -4,6 +4,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 
 import UploadHandler from './interactors/UploadHandler';
+import JobStatusQueryHandler from './interactors/JobStatusQueryHandler';
 
 const app: express.Application = express();
 
@@ -14,11 +15,7 @@ app.get('/', function (req, res) {
 });
 
 app.get('/jobs/:jobId', function (req, res) {
-    const { jobId } = req.params;
-
-
-
-    res.json({ jobId });
+    JobStatusQueryHandler(req, res);
 });
 
 app.post('/jobs/upload', function (req, res) {

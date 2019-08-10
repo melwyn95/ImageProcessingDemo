@@ -12,7 +12,7 @@ day1:
         Upload a file
         ----Upload to Imgur
         Queue Job in Kafka
-        Return status of job by querying Redis
+        ----Return status of job by querying Redis
 
 day3:
 
