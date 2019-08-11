@@ -37,12 +37,12 @@ const UploadHandler = (req: Request, res: Response) => {
         }
 
         // Upload to Imgur
-        const formData = new FormData();
-        formData.append('image', fs.createReadStream(filePath));
+        const body = new FormData();
+        body.append('image', fs.createReadStream(filePath));
         fetch(IMGUR_UPLOAD_API_URL, {
             method: 'POST',
             headers,
-            body: formData
+            body
         }).then(async response => {
             const { data: { link: imgurURL } = { link: ''}} = await response.json();
 
@@ -50,6 +50,7 @@ const UploadHandler = (req: Request, res: Response) => {
             deleteFile(filePath);
 
             // Queue Job on to Kafka
+            
 
             // Update status in Redis
             UpdateStatusInRedis(jobId, { 
@@ -60,10 +61,8 @@ const UploadHandler = (req: Request, res: Response) => {
             });
             
         }).catch(error => {
-
             // Update Status in Redis
             UpdateStatusInRedis(jobId, { status: FAILURE, message: UNABLE_TO_UPLOAD_IMAGE });
-
         });
 
         UpdateStatusInRedis(jobId, { status: PROCESSING, message: '' });
