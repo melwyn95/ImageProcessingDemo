@@ -18,18 +18,14 @@ Producer.on('error', () => {
     });
 });
 
-export const AddJobToQueue = (jobId: string, messages: string) => {
+export const AddJobToQueue = (jobId: string, job: Job) => {
     GetStatusInRedis('kafka', ['status'], (_: any, { status }: { status: string}) => {
         switch (status) {
             case RUNNING: {
-                const payloads = [{ topic: KAFKA_TOPIC, messages }];
+                const payloads = [{ topic: KAFKA_TOPIC, messages: JSON.stringify(job) }];
                 Producer.send(payloads, (_err, _) => {
                     if (!_err) {
-                        const job: Job = {
-                            jobId,
-                            status: PROCESSING,
-                            message: JOB_QUEUED,
-                        }
+                        job.message = JOB_QUEUED;
                         UpdateStatusInRedis(jobId, job);
                     }
                 });

@@ -5,7 +5,7 @@ import { head } from 'ramda';
 import fetch from 'node-fetch';
 import FormData from 'form-data';
 
-import { FAILURE, PROCESSING, SUCCESS, INVALID_IMAGE_DIMENSIONS, UNABLE_TO_UPLOAD_IMAGE } from '../constants';
+import { FAILURE, PROCESSING, INVALID_IMAGE_DIMENSIONS, UNABLE_TO_UPLOAD_IMAGE } from '../constants';
 import { Request, Response } from 'express';
 import { getMulterRequestHandler } from '../helpers/Upload';
 import UpdateStatusInRedis from '../services/UpdateStatusInRedis';
@@ -48,12 +48,12 @@ const UploadHandler = (req: Request, res: Response) => {
             const { data: { link: imgurURL } = { link: ''}} = await response.json();
             const job: Job = {
                 jobId,
-                status: SUCCESS, 
+                status: PROCESSING, 
                 message: '',
                 originalImage: imgurURL,
             }
             deleteFile(filePath);
-            AddJobToQueue(jobId, JSON.stringify(job));
+            AddJobToQueue(jobId, job);
             
         }).catch(error => {
             const job: Job = { jobId, status: FAILURE, message: UNABLE_TO_UPLOAD_IMAGE };
