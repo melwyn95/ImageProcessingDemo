@@ -7,7 +7,7 @@ import FormData from 'form-data';
 
 import { FAILURE, PROCESSING, SUCCESS, INVALID_IMAGE_DIMENSIONS, UNABLE_TO_UPLOAD_IMAGE } from '../constants';
 import { Request, Response } from 'express';
-import { getMulterRequestHandler } from '../services/Upload';
+import { getMulterRequestHandler } from '../helpers/Upload';
 import UpdateStatusInRedis from '../services/UpdateStatusInRedis';
 import { IMGUR_UPLOAD_API_URL, IMGUR_AUTH_HEADER_VALUE } from '../config';
 import ValidateImageDimensions from '../services/ValidateImageDimensions';

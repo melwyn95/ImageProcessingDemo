@@ -1,0 +1,8 @@
+**/node_modules
+**/build
+**/images
+**/kafka
+*.jpg
+*.jpeg
+*.png
+*.tgz

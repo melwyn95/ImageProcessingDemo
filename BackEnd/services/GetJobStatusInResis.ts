@@ -1,4 +1,4 @@
-import RedisClient from './RedisClient';
+import RedisClient from '../helpers/RedisClient';
 
 const GetJobStatusInRedis = (jobId: string, fieldNames: string [], callback: Function) => {
     RedisClient.hgetall(jobId, (err, object) => {
