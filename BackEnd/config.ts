@@ -8,3 +8,6 @@ export const IMGUR_AUTH_HEADER_VALUE = `Client-ID ${IMGUR_CLIENT_ID}`;
 
 export const RECOMMENDED_IMAGE_WIDTH = 1024;
 export const RECOMMENDED_IMAGE_HEIGHT = 1024;
+
+export const KAFKA_TOPIC = 'images';
+export const KAFKA_SERVER = 'localhost:9092';

@@ -11,10 +11,10 @@ day1:
         ----Get URL from Redis
         ----Upload a file
         ----Upload to Imgur
-        Queue Job in Kafka
+        ----Queue Job in Kafka
         ----Return status of job by querying Redis
 
-day3:
+day2:
 
     Frontend:
         UI to show all cropped images

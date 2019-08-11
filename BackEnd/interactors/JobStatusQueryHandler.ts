@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import GetJobStatusInRedis from '../services/GetJobStatusInResis';
+import GetJobStatusInRedis from '../services/GetStatusInRedis';
 
 const JobStatusQueryHandler = (req: Request, res: Response) => {
     const { jobId } = req.params;

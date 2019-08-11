@@ -12,6 +12,7 @@ import UpdateStatusInRedis from '../services/UpdateStatusInRedis';
 import { IMGUR_UPLOAD_API_URL, IMGUR_AUTH_HEADER_VALUE } from '../config';
 import ValidateImageDimensions from '../services/ValidateImageDimensions';
 import { deleteFile } from '../utils';
+import { AddJobToQueue } from '../services/AddJobToQueue';
 
 
 const headers = { Authorization: IMGUR_AUTH_HEADER_VALUE };
@@ -50,15 +51,12 @@ const UploadHandler = (req: Request, res: Response) => {
             deleteFile(filePath);
 
             // Queue Job on to Kafka
-            
-
-            // Update status in Redis
-            UpdateStatusInRedis(jobId, { 
+            AddJobToQueue(jobId, JSON.stringify({ 
                 jobId,
                 status: SUCCESS, 
                 message: '',
                 originalImage: imgurURL,                
-            });
+            }));
             
         }).catch(error => {
             // Update Status in Redis
