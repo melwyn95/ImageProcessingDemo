@@ -8,3 +8,9 @@
 
 # To install Kafka
 # Refer: https://www.digitalocean.com/community/tutorials/how-to-install-apache-kafka-on-ubuntu-18-04
+
+# sudo apt install python3-pip
+# pip3 install kafka-python
+# pip3 install opencv-python
+# pip3 install imgurpython
+# pip3 install redis

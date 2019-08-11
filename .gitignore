@@ -6,3 +6,4 @@
 *.jpeg
 *.png
 *.tgz
+**/__pycache__

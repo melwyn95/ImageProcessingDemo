@@ -21,5 +21,7 @@ day2:
         Stop Polling
 
     Backend:
-        Consumner to Crop Images and Upload to Imgur
-        Update Status of Job in Redis after every update
+        ----Set up python kafka Consumer
+        ----Write openCV code to crop images
+        ----Upload Images to Imgur
+        Update Status of Job in Redis

@@ -13,7 +13,7 @@ import { IMGUR_UPLOAD_API_URL, IMGUR_AUTH_HEADER_VALUE } from '../config';
 import ValidateImageDimensions from '../services/ValidateImageDimensions';
 import { deleteFile } from '../utils';
 import { AddJobToQueue } from '../services/AddJobToQueue';
-
+import { Job } from '../types';
 
 const headers = { Authorization: IMGUR_AUTH_HEADER_VALUE };
 const getPathName = (fileName: string) => path.join(__dirname, '../images', fileName);
@@ -46,35 +46,24 @@ const UploadHandler = (req: Request, res: Response) => {
             body
         }).then(async response => {
             const { data: { link: imgurURL } = { link: ''}} = await response.json();
-
-            // Delete Image File
-            deleteFile(filePath);
-
-            // Queue Job on to Kafka
-            AddJobToQueue(jobId, JSON.stringify({ 
+            const job: Job = {
                 jobId,
                 status: SUCCESS, 
                 message: '',
-                originalImage: imgurURL,                
-            }));
+                originalImage: imgurURL,
+            }
+            deleteFile(filePath);
+            AddJobToQueue(jobId, JSON.stringify(job));
             
         }).catch(error => {
-            // Update Status in Redis
-            UpdateStatusInRedis(jobId, { status: FAILURE, message: UNABLE_TO_UPLOAD_IMAGE });
+            const job: Job = { jobId, status: FAILURE, message: UNABLE_TO_UPLOAD_IMAGE };
+            UpdateStatusInRedis(jobId, job);
         });
 
-        UpdateStatusInRedis(jobId, { status: PROCESSING, message: '' });
+        UpdateStatusInRedis(jobId, { jobId, status: PROCESSING, message: '' });
 
         return res.json({ type: PROCESSING, jobId });
     });
 }
 
 export default UploadHandler;
-
-
-/**
- * Client Id: 8475947c783fd3c
- * Client Secret: ba27d1222275f7b24de907d5298ac05f0cda71e7
- */
-
-
