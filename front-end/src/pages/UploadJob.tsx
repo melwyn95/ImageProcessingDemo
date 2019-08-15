@@ -1,11 +1,13 @@
 // https://stackoverflow.com/questions/13572129/is-it-possible-to-check-dimensions-of-image-before-uploading
 import React, { useRef, useCallback, useReducer, useEffect } from 'react';
+import { withRouter } from 'react-router-dom'
 import Button from '@material-ui/core/Button';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { MIN_IMAGE_HEIGHT, ERROR_IMAGE_DIMENSIONS, MIN_IMAGE_WIDTH, ERROR_FILE_UPLOAD, PROCESSING, SUCCESS, FAILURE, ERROR } from '../constants';
 import axios, { AxiosRequestConfig } from 'axios';
+import { History } from 'history';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -197,7 +199,7 @@ const JobStatus = ({ isVisible, className, message }: JobStatusProps) => (isVisi
     <Message className={className} message={message}/>
 </div>) : null);
 
-const UploadJob = () => {
+const UploadJob = ({ history }: { history: History }) => {
     const { button, input, formBody, imageHide, imageShow, linearProgressRoot, defaultMessageClassName } = useStyles();
     // @ts-ignore
     const imageRef: React.MutableRefObject<HTMLImageElement> | undefined = useRef(undefined);
@@ -253,14 +255,16 @@ const UploadJob = () => {
                         }
                         case SUCCESS: {
                             dispactch({ type: states.IMAGE_CROP_SUCCESS, payload: {
-                                message: response.data.message
+                                message: response.data.message,
+                                processingStatus: SUCCESS,
                             }});
                             break;
                         }
                         case FAILURE: {
                             dispactch({ type: states.IMAGE_CROP_FAILURE, payload: {
                                 message: undefined,
-                                error: response.data.message
+                                error: response.data.message,
+                                processingStatus: FAILURE,
                             }});
                             break;
                         }
@@ -270,7 +274,13 @@ const UploadJob = () => {
         }
     }, [state]);
 
-    console.log(state)
+    
+    useEffect(() => {
+        if (state.processingStatus === SUCCESS) {
+            history.push(`/result/${state.jobId}`);
+        }
+    }, [state]);
+
     return (<form className={formBody}>
         <FileUploadInput onFileUpoad={onFileUpoad} 
             inputClassName={input} 
@@ -290,7 +300,7 @@ const UploadJob = () => {
     </form>
 )};
 
-export default UploadJob;
+export default withRouter(UploadJob);
 
 
 /**

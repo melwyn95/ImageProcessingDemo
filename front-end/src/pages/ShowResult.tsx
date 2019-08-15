@@ -1,4 +1,9 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { SUCCESS, PROCESSING } from '../constants';
+
+import styles from '../styles/ShowResults.module.css';
 
 interface Params {
     jobId: string
@@ -12,6 +17,43 @@ interface ShowResultProps {
     match: Match
 }
 
-const ShowResult = ({ match: { params: { jobId } } }: ShowResultProps) => <div>jobId</div>;
+type ImageData = {
+    status: string,
+    gallery?: string,
+    horizontal?: string,
+    horizontalSmall?: string,
+    vertical?: string,
+}
+
+const initialImageData = {
+    status: PROCESSING
+}
+
+const ShowResult = ({ match: { params: { jobId } } }: ShowResultProps) => {
+    const [imageData, setImageData]: [ImageData, React.Dispatch<React.SetStateAction<ImageData>>] 
+        = useState(initialImageData);
+    
+    useEffect(() => {
+        axios.get(`http://localhost:8000/jobs/${jobId}`)
+            .then((response: any) => setImageData(response.data))
+            .catch(_ => setImageData(initialImageData));
+    }, []);
+
+    
+    return (imageData.status === SUCCESS ? <div className={styles.containerImages}>
+        <div className={styles.sectionContainer}>
+            Gallery:
+            <img src={imageData.gallery} className={styles.sizeGallery}/>
+            Horizontal:
+            <img src={imageData.horizontal} className={styles.sizeHorizontal}/>
+        </div>
+        <div className={styles.sectionContainer}>
+            Horizontal Small:
+            <img src={imageData.horizontalSmall} className={styles.sizeHorizontalSmall}/>
+            Vertical:
+            <img src={imageData.vertical} className={styles.sizeVertical}/>
+        </div>
+    </div> : <CircularProgress />);
+};
 
 export default ShowResult;

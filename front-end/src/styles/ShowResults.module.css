@@ -1,0 +1,29 @@
+.containerImages {
+    display: flex;
+    flex-direction: column;
+}
+
+.sectionContainer {
+    display: flex;
+    margin: 10px;
+}
+
+.sizeGallery {
+    height: 380px; 
+    width: 380px;
+}
+
+.sizeHorizontal {
+    height: 755px; 
+    width: 450px;
+}
+
+.sizeHorizontalSmall {
+    height: 365px; 
+    width: 212px;
+}
+
+.sizeVertical {
+    height: 365px; 
+    width: 450px;
+}
