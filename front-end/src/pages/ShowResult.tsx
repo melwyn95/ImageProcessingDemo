@@ -37,21 +37,21 @@ const ShowResult = ({ match: { params: { jobId } } }: ShowResultProps) => {
         axios.get(`http://localhost:8000/jobs/${jobId}`)
             .then((response: any) => setImageData(response.data))
             .catch(_ => setImageData(initialImageData));
-    }, []);
+    }, [jobId]);
 
     
     return (imageData.status === SUCCESS ? <div className={styles.containerImages}>
         <div className={styles.sectionContainer}>
             Gallery:
-            <img src={imageData.gallery} className={styles.sizeGallery}/>
+            <img src={imageData.gallery} className={styles.sizeGallery} alt=""/>
             Horizontal:
-            <img src={imageData.horizontal} className={styles.sizeHorizontal}/>
+            <img src={imageData.horizontal} className={styles.sizeHorizontal} alt=""/>
         </div>
         <div className={styles.sectionContainer}>
             Horizontal Small:
-            <img src={imageData.horizontalSmall} className={styles.sizeHorizontalSmall}/>
+            <img src={imageData.horizontalSmall} className={styles.sizeHorizontalSmall} alt=""/>
             Vertical:
-            <img src={imageData.vertical} className={styles.sizeVertical}/>
+            <img src={imageData.vertical} className={styles.sizeVertical} alt=""/>
         </div>
     </div> : <CircularProgress />);
 };

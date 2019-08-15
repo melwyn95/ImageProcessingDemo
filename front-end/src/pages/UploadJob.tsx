@@ -84,8 +84,6 @@ const reducer = (state:any, action: Action) => {
         case states.IMAGE_UPLOAD_FAILED: {
             return { ...state, imageUploadStarted: false, error: ERROR_FILE_UPLOAD };
         }
-        case states.IMAGE_UPLOAD_FAILED:
-            return { imageUploadProgress: 0 };
         case states.IMAGE_DIMENSIONS_INVALID: {
             return { ...state, error: ERROR_IMAGE_DIMENSIONS };
         }
@@ -238,7 +236,7 @@ const UploadJob = ({ history }: { history: History }) => {
             image.src = imageUrl;
             imageRef && (imageRef.current.src = imageUrl);
         }
-    }, []);
+    }, [imageHide, imageShow]);
     
     useEffect(() => {
         if (state.jobId && state.shouldPoll) {
@@ -272,14 +270,14 @@ const UploadJob = ({ history }: { history: History }) => {
                 });
             }, 500);
         }
-    }, [state]);
+    }, [state, imageHide, imageShow]);
 
     
     useEffect(() => {
         if (state.processingStatus === SUCCESS) {
             history.push(`/result/${state.jobId}`);
         }
-    }, [state]);
+    }, [state, history]);
 
     return (<form className={formBody}>
         <FileUploadInput onFileUpoad={onFileUpoad} 
@@ -294,7 +292,7 @@ const UploadJob = ({ history }: { history: History }) => {
             message={state.message}/>
         <div className={imageClassNameRef.current}>
             Preview:
-            <img ref={imageRef} height={250} width={250}/>
+            <img ref={imageRef} height={250} width={250} alt=""/>
         </div>
         <Message isVisible={!!state.error} type={ERROR} message={state.error}/>
     </form>
@@ -302,14 +300,10 @@ const UploadJob = ({ history }: { history: History }) => {
 
 export default withRouter(UploadJob);
 
-
-/**
- * Header
- * Form Upload -> Progress 
- * Upload Button -> Preview -> on Done ShowResults
- */
-
- /**
-  * Circular Progress
-  * OnSuccess -> display images on next page
-  */
+/*
+Refactor UI codebase
+Remove secret key and upload to git hub
+Make screen cast of demo
+Make zip file
+Email demo, zip file and git hub link
+*/

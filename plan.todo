@@ -25,3 +25,7 @@ day2:
         ----Write openCV code to crop images
         ----Upload Images to Imgur
         ----Update Status of Job in Redis
+
+sudo netstat -nlp | grep :8000
+
+https://www.loom.com/share/0051d4fdda594006903425170b5d46e2
