@@ -24,4 +24,4 @@ day2:
         ----Set up python kafka Consumer
         ----Write openCV code to crop images
         ----Upload Images to Imgur
-        Update Status of Job in Redis
+        ----Update Status of Job in Redis

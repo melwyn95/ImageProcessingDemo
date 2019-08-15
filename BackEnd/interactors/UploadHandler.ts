@@ -5,7 +5,7 @@ import { head } from 'ramda';
 import fetch from 'node-fetch';
 import FormData from 'form-data';
 
-import { FAILURE, PROCESSING, INVALID_IMAGE_DIMENSIONS, UNABLE_TO_UPLOAD_IMAGE } from '../constants';
+import { FAILURE, PROCESSING, INVALID_IMAGE_DIMENSIONS, UNABLE_TO_UPLOAD_IMAGE, UPLOADING_IMAGE_TO_IMGUR } from '../constants';
 import { Request, Response } from 'express';
 import { getMulterRequestHandler } from '../helpers/Upload';
 import UpdateStatusInRedis from '../services/UpdateStatusInRedis';
@@ -60,7 +60,7 @@ const UploadHandler = (req: Request, res: Response) => {
             UpdateStatusInRedis(jobId, job);
         });
 
-        UpdateStatusInRedis(jobId, { jobId, status: PROCESSING, message: '' });
+        UpdateStatusInRedis(jobId, { jobId, status: PROCESSING, message: UPLOADING_IMAGE_TO_IMGUR });
 
         return res.json({ type: PROCESSING, jobId });
     });
