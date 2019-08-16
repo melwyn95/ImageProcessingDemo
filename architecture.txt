@@ -1,0 +1,44 @@
+Front End:
+    Front End is a react app written in TypeScript it has 2 pages
+    1. Upload image for cropping
+    2. Display the croppedn images
+
+    After uploading the file to the server the UI polls the server 
+    to get the current status of the cropping process
+
+Backend:
+    Server:
+        The Backend is written in TypeScript and runs on express
+    
+    Data Storage:
+        The Backend uses Redis for data persistence, I choose Redis
+    because it is very fast and the current data storage requirements
+    were not heavy
+
+    Message Queue:
+        Used Kafka as a message queue, to avoid heavy image processing
+    on the server, instead moved the image processing to Kafka consumer
+    written in Python and used openCV library for image processing
+
+    Image Hosting:
+        Used Imgur for hosting images
+
+Possible Improvements:
+
+    Websocket over polling:
+        Instead of constantly polling the server for updates, a Websocket
+    connection can be maintained which will notify the UI about the 
+    status of the cropping process.
+
+    Opportunities for Scaling:
+        We can clusterize Redis and Kafka to handle additional load,
+    we can put multiple instances of the server behind a load balancer for
+    scaling, we can have an Orchestrator which will manage (spawn and kill)
+    consumers depending on the load on the Kafka Queue,
+
+    We can increase the throughput of the system by creating multiple
+    consumers, each consumer will crop an image of specific dimension, by 
+    doing so we can crop images of diffent dimension parallely.(In our case
+    4 consumers for 4 image dimension)
+
+    We can use AWS S3 for scalable and cheap storage.
