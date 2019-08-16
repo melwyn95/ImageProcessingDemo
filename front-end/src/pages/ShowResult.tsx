@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import CircularProgress from '@material-ui/core/CircularProgress';
+
+import GetJobStatus from '../services/GetJobStatus';
+
 import { SUCCESS, PROCESSING } from '../constants';
 
-import styles from '../styles/ShowResults.module.css';
+import styles from '../styles/components/ShowResults.module.css';
 
 interface Params {
     jobId: string
@@ -34,7 +36,7 @@ const ShowResult = ({ match: { params: { jobId } } }: ShowResultProps) => {
         = useState(initialImageData);
     
     useEffect(() => {
-        axios.get(`http://localhost:8000/jobs/${jobId}`)
+        GetJobStatus(jobId)
             .then((response: any) => setImageData(response.data))
             .catch(_ => setImageData(initialImageData));
     }, [jobId]);

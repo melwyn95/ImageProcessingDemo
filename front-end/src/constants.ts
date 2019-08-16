@@ -10,3 +10,5 @@ export const SUCCESS = 'success';
 export const FAILURE = 'failure';
 
 export const ERROR = 'ERROR';
+
+export const ERROR_PROCESSING_JOB = 'Error in processing job, Please type again...';
