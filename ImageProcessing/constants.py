@@ -40,5 +40,5 @@ REDIS_PASSWORD = 'foobared'
 LINK = 'link'
 
 # Imgur Secrets
-CLIENT_ID = '8475947c783fd3c'
-CLIENT_SECRET = 'ba27d1222275f7b24de907d5298ac05f0cda71e7'
+CLIENT_ID = '--------'
+CLIENT_SECRET = '--------'
